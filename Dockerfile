@@ -23,6 +23,15 @@ RUN wget https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VE
     chmod +x ${DOCKER_COMPOSE_APP} && \
     mv ${DOCKER_COMPOSE_APP} /usr/local/bin/${DOCKER_COMPOSE_APP}
 
+ARG OWASP_DC_APP=dependency-check
+ARG OWASP_DC_VERSION=6.0.3
+ENV RUN_DEPENDENCY_CHECK=/usr/share/${OWASP_DC_APP}/bin/${OWASP_DC_APP}.sh
+RUN wget https://dl.bintray.com/jeremy-long/owasp/${OWASP_DC_APP}-${OWASP_DC_VERSION}-release.zip \
+    -O ${OWASP_DC_APP}.zip && \
+    unzip ${OWASP_DC_APP}.zip && \
+    mv ${OWASP_DC_APP} /usr/share/${OWASP_DC_APP} && \
+    rm -rf ${OWASP_DC_APP}.zip
+
 ARG APP=sonar-scanner
 ARG VERSION=4.5.0.2216
 ARG ARCH=linux
@@ -33,12 +42,3 @@ RUN wget https://binaries.sonarsource.com/Distribution/${APP}-cli/${APP}-cli-${V
 	mv ${APP}-${VERSION}-${ARCH} $SONAR_RUNNER_HOME && \
 	ln -s $SONAR_RUNNER_HOME/bin/${APP} /usr/local/bin/${APP} && \
 	rm -rf ${APP}.zip
-
-ARG OWASP_DC_APP=dependency-check
-ARG OWASP_DC_VERSION=6.0.3
-ENV RUN_DEPENDENCY_CHECK=/usr/share/${OWASP_DC_APP}/bin/${OWASP_DC_APP}.sh
-RUN wget https://dl.bintray.com/jeremy-long/owasp/${OWASP_DC_APP}-${OWASP_DC_VERSION}-release.zip \
-    -O ${OWASP_DC_APP}.zip && \
-    unzip ${OWASP_DC_APP}.zip && \
-    mv ${OWASP_DC_APP} /usr/share/${OWASP_DC_APP} && \
-    rm -rf ${OWASP_DC_APP}.zip
