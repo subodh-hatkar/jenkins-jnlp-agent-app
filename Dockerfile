@@ -1,10 +1,4 @@
-FROM jenkins/inbound-agent:4.6-1-jdk11
-
-USER root
-
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
-    apt-get -y update && \
-    apt-get -y install apt-utils dialog jq libncurses5 make maven nodejs uuid-runtime
+FROM subodhhatkar/jenkins-jnlp-agent-openjdk:4.6-1-jdk11
 
 ARG DOCKER_APP=docker
 ARG DOCKER_VERSION=19.03.13
