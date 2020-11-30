@@ -17,6 +17,16 @@ RUN wget https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VE
     chmod +x ${DOCKER_COMPOSE_APP} && \
     mv ${DOCKER_COMPOSE_APP} /usr/local/bin/${DOCKER_COMPOSE_APP}
 
+ARG JMETER_APP=jmeter
+ARG JMETER_VERSION=5.3
+ENV JMETER_HOME=/usr/local/apache-${JMETER_APP}-${JMETER_VERSION}
+ENV PATH=$JMETER_HOME/bin:$PATH
+RUN wget https://mirrors.gethosted.online/apache/${JMETER_APP}/binaries/apache-${JMETER_APP}-${JMETER_VERSION}.tgz \
+    -O apache-${JMETER_APP}-${JMETER_VERSION}.tgz && \
+    tar -xvf apache-${JMETER_APP}-${JMETER_VERSION}.tgz && \
+    mv apache-${JMETER_APP}-${JMETER_VERSION} $JMETER_HOME && \
+    rm -rf apache-${JMETER_APP}-${JMETER_VERSION}.tgz
+
 ARG OWASP_DC_APP=dependency-check
 ARG OWASP_DC_VERSION=6.0.3
 ENV RUN_DEPENDENCY_CHECK=/usr/share/${OWASP_DC_APP}/bin/${OWASP_DC_APP}.sh
